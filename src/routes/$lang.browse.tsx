@@ -90,44 +90,48 @@ function Browse() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="font-display text-3xl font-semibold">{t.browse.title}</h1>
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
+      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.browse.title}</h1>
 
-      <form key={JSON.stringify(search)} onSubmit={onSubmit} className="mt-6 grid gap-3 rounded-2xl border border-border bg-card p-4 shadow-card md:grid-cols-[1fr_120px_120px_auto]">
+      <form key={JSON.stringify(search)} onSubmit={onSubmit} className="mt-4 grid gap-3 rounded-2xl border border-border bg-card p-3 sm:p-4 shadow-card">
         <Input name="q" defaultValue={search.q} placeholder={t.home.searchPlaceholder} aria-label={t.home.search} />
-        <Input name="min" type="number" min={0} defaultValue={search.min} placeholder={t.browse.minPrice} aria-label={t.browse.minPrice} />
-        <Input name="max" type="number" min={0} defaultValue={search.max} placeholder={t.browse.maxPrice} aria-label={t.browse.maxPrice} />
-        <Button type="submit"><Search className="size-4" /> {t.browse.apply}</Button>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <Input name="min" type="number" min={0} defaultValue={search.min} placeholder={t.browse.minPrice} aria-label={t.browse.minPrice} />
+          <Input name="max" type="number" min={0} defaultValue={search.max} placeholder={t.browse.maxPrice} aria-label={t.browse.maxPrice} />
+          <Button type="submit" className="col-span-2 sm:col-span-1"><Search className="size-4" /> {t.browse.apply}</Button>
+        </div>
       </form>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-2">
         <Chip active={!search.category} onClick={() => navigate({ search: (p) => ({ ...p, category: undefined }) })}>{t.browse.all}</Chip>
         {categories.data?.map((c) => (
           <Chip key={c.id} active={search.category === c.slug} onClick={() => navigate({ search: (p) => ({ ...p, category: c.slug }) })}>
             {lang === "zh" ? c.name_zh : c.name_mn}
           </Chip>
         ))}
-        <select
-          aria-label={t.browse.sort}
-          value={search.sort ?? "new"}
-          onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value === "new" ? undefined : (e.target.value as Sort) }) })}
-          className="ml-auto h-9 rounded-md border border-input bg-background px-3 text-sm"
-        >
-          <option value="new">{t.browse.newest}</option>
-          <option value="price_asc">{t.browse.priceAsc}</option>
-          <option value="price_desc">{t.browse.priceDesc}</option>
-        </select>
-        <Button variant="ghost" size="sm" onClick={() => navigate({ search: {} })}>{t.browse.reset}</Button>
+        <div className="ml-auto flex items-center gap-2 flex-wrap">
+          <select
+            aria-label={t.browse.sort}
+            value={search.sort ?? "new"}
+            onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value === "new" ? undefined : (e.target.value as Sort) }) })}
+            className="h-11 rounded-md border border-input bg-background px-3 text-sm"
+          >
+            <option value="new">{t.browse.newest}</option>
+            <option value="price_asc">{t.browse.priceAsc}</option>
+            <option value="price_desc">{t.browse.priceDesc}</option>
+          </select>
+          <Button variant="ghost" size="sm" onClick={() => navigate({ search: {} })}>{t.browse.reset}</Button>
+        </div>
       </div>
 
       {products.isLoading ? (
-        <p className="mt-10 text-muted-foreground">{t.browse.loading}</p>
+        <p className="mt-8 text-muted-foreground">{t.browse.loading}</p>
       ) : products.data?.length === 0 ? (
-        <p className="mt-10 text-muted-foreground">{t.browse.noResults}</p>
+        <p className="mt-8 text-muted-foreground">{t.browse.noResults}</p>
       ) : (
-        <>
-          <p className="mt-6 text-sm text-muted-foreground">{products.data?.length} {t.browse.results}</p>
-          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <> 
+          <p className="mt-4 text-sm text-muted-foreground">{products.data?.length} {t.browse.results}</p>
+          <div className="mt-3 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.data?.map((p) => (
               <ProductCard key={p.id} product={p} imageUrl={p.images[0] ? urls.data?.[p.images[0]] : undefined} storeName={p.stores?.name} />
             ))}

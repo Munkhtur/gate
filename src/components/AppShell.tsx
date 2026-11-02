@@ -61,23 +61,27 @@ export function AppShell({ children }: { children: ReactNode }) {
     navigate({ to: "/$lang/auth", params: { lang }, replace: true });
   }
 
+  function closeMenu() {
+    setOpen(false);
+  }
+
   const navLinks = (
     <>
-      <Link to="/$lang" params={{ lang }} activeOptions={{ exact: true }} className="hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}>
+      <Link to="/$lang" params={{ lang }} activeOptions={{ exact: true }} className="hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}>
         {t.nav.home}
       </Link>
-      <Link to="/$lang/browse" params={{ lang }} className="hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}>
+      <Link to="/$lang/browse" params={{ lang }} className="hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}>
         {t.nav.browse}
       </Link>
-      <Link to="/$lang/stores" params={{ lang }} activeOptions={{ exact: true }} className="hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}>
+      <Link to="/$lang/stores" params={{ lang }} activeOptions={{ exact: true }} className="hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}>
         {t.nav.stores}
       </Link>
-      <Link to="/$lang/wishlist" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}>
+      <Link to="/$lang/wishlist" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}>
         <Heart className="size-4" /> {t.nav.wishlist}
       </Link>
-      <Link to="/$lang/following" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}><BellRing className="size-4" />{t.follow.title}</Link>
-      <Link to="/$lang/shorts" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}><Clapperboard className="size-4" />{t.posts.title}</Link>
-      <Link to="/$lang/dashboard" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={() => setOpen(false)}>
+      <Link to="/$lang/following" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}><BellRing className="size-4" />{t.follow.title}</Link>
+      <Link to="/$lang/shorts" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}><Clapperboard className="size-4" />{t.posts.title}</Link>
+      <Link to="/$lang/dashboard" params={{ lang }} className="inline-flex items-center gap-1.5 hover:text-primary" activeProps={{ className: "text-primary font-semibold" }} onClick={closeMenu}>
         <Store className="size-4" /> {t.nav.dashboard}
       </Link>
     </>
@@ -86,7 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const authControls = session ? (
     <div className="flex items-center gap-2">
       <Button asChild variant="ghost" size="sm">
-        <Link to="/$lang/account" params={{ lang }} onClick={() => setOpen(false)}>
+        <Link to="/$lang/account" params={{ lang }} onClick={closeMenu}>
           <User className="size-4" /> {t.nav.account}
         </Link>
       </Button>
@@ -95,8 +99,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       </Button>
     </div>
   ) : (
-    <Button asChild size="sm">
-      <Link to="/$lang/auth" params={{ lang }} onClick={() => setOpen(false)}>
+    <Button asChild size="sm" onClick={closeMenu}>
+      <Link to="/$lang/auth" params={{ lang }}>
         {t.nav.signIn}
       </Link>
     </Button>
@@ -105,31 +109,31 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
           <Link to="/$lang" params={{ lang }} className="font-display text-xl font-bold tracking-tight text-primary">
             {t.brand}
           </Link>
-          <nav className="hidden items-center gap-4 text-sm xl:flex">{navLinks}</nav>
-          <div className="ml-auto hidden items-center gap-3 xl:flex">
+          <nav className="hidden items-center gap-2 text-sm md:flex">{navLinks}</nav>
+          <div className="ml-auto hidden items-center gap-2 md:flex">
             <LanguageSwitcher />
             {authControls}
           </div>
-          <Button variant="ghost" size="icon" className="ml-auto xl:hidden" aria-label={t.nav.menu} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            {open ? <X /> : <Menu />}
+          <Button variant="ghost" size="icon" className="ml-auto md:hidden" aria-label={t.nav.menu} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+            {open ? <X className="size-6" /> : <Menu className="size-6" />}
           </Button>
         </div>
         {open && (
-          <div className="border-t border-border bg-background px-4 py-4 xl:hidden">
-            <nav className="flex flex-col gap-4 text-base">{navLinks}</nav>
-            <div className="mt-5 flex flex-col items-start gap-4">
-              <LanguageSwitcher onSwitch={() => setOpen(false)} />
+          <div className="border-t border-border bg-background px-4 py-4 md:hidden">
+            <nav className="flex flex-col gap-2 text-base">{navLinks}</nav>
+            <div className="mt-4 flex flex-col items-start gap-3">
+              <LanguageSwitcher onSwitch={closeMenu} />
               {authControls}
             </div>
           </div>
         )}
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="border-t border-border py-8 text-sm text-muted-foreground">
+      <footer className="border-t border-border py-6 text-sm text-muted-foreground">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4">
           <span className="font-display text-primary">{t.brand}</span>
           <span>© {new Date().getFullYear()} {t.brand}. {t.footer.rights}</span>

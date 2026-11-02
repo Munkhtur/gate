@@ -28,12 +28,12 @@ export const Route = createFileRoute("/$lang/_authenticated/wishlist")({
 
 function WishlistLoading() {
   const t = useT();
-  return <p className="mx-auto max-w-6xl px-4 py-14 text-muted-foreground">{t.browse.loading}</p>;
+  return <p className="mx-auto max-w-6xl px-4 py-10 text-muted-foreground">{t.browse.loading}</p>;
 }
 
 function WishlistError({ reset }: { reset: () => void }) {
   const t = useT();
-  return <div className="mx-auto max-w-6xl px-4 py-14"><p role="alert">{t.auth.genericError}</p><Button className="mt-4" onClick={reset}>{t.wishlist.retry}</Button></div>;
+  return <div className="mx-auto max-w-6xl px-4 py-10"><p role="alert">{t.auth.genericError}</p><Button className="mt-4" onClick={reset}>{t.wishlist.retry}</Button></div>;
 }
 
 function Wishlist() {
@@ -43,16 +43,16 @@ function Wishlist() {
   const { data: products } = useSuspenseQuery(wishlistOptions(user.id));
   const urls = useImageUrls(products.flatMap((p) => p.images[0] ? [p.images[0]] : []));
   return (
-    <div className="mx-auto max-w-6xl px-4 py-14">
-      <h1 className="font-display text-3xl font-semibold">{t.wishlist.title}</h1>
+    <div className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.wishlist.title}</h1>
       {products.length === 0 ? (
-        <div className="mt-12 flex flex-col items-center gap-4 py-10 text-center">
+        <div className="mt-8 flex flex-col items-center gap-4 py-8 text-center">
           <Heart className="size-8 text-primary" />
           <p className="text-muted-foreground">{t.wishlist.empty}</p>
           <Button asChild variant="outline"><Link to="/$lang/browse" params={{ lang }}>{t.wishlist.browse}</Link></Button>
         </div>
       ) : (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((p) => <ProductCard key={p.id} product={p} storeName={p.stores?.name} imageUrl={p.images[0] ? urls.data?.[p.images[0]] : undefined} />)}
         </div>
       )}

@@ -57,17 +57,17 @@ function ProductPage() {
   const main = p.images[active] ? urls.data?.[p.images[active]] : undefined;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-8">
       <Link to="/$lang/browse" params={{ lang }} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
         <ArrowLeft className="size-4" /> {t.browse.back}
       </Link>
-      <div className="mt-6 grid gap-10 md:grid-cols-2">
+      <div className="mt-6 space-y-6 md:grid md:grid-cols-2 md:gap-10 md:space-y-0">
         <div>
           <div className="aspect-square overflow-hidden rounded-2xl bg-secondary">
             {main && <img src={main} alt={p.title} className="size-full object-cover" />}
           </div>
           {p.images.length > 1 && (
-            <div className="mt-3 grid grid-cols-5 gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
               {p.images.map((img, i) => (
                 <button key={img} type="button" onClick={() => setActive(i)} className={`aspect-square overflow-hidden rounded-md border-2 bg-secondary ${i === active ? "border-primary" : "border-transparent"}`}>
                   {urls.data?.[img] && <img src={urls.data[img]} alt="" className="size-full object-cover" />}
@@ -76,34 +76,34 @@ function ProductPage() {
             </div>
           )}
         </div>
-        <div>
+        <div className="space-y-5">
           {p.categories && (
             <Link to="/$lang/browse" params={{ lang }} search={{ category: p.categories.slug }} className="text-sm uppercase tracking-wider text-accent-foreground/70 hover:text-primary">
               {lang === "zh" ? p.categories.name_zh : p.categories.name_mn}
             </Link>
           )}
-          <h1 className="mt-2 font-display text-3xl font-semibold">{p.title}</h1>
-          <p className="mt-3 text-3xl font-bold text-primary">{formatPrice(p.price)}</p>
-          {p.is_published && <div className="mt-5"><SaveProductButton productId={p.id} /></div>}
-          {p.description && <p className="mt-6 whitespace-pre-line text-foreground/85">{p.description}</p>}
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold">{p.title}</h1>
+          <p className="text-2xl sm:text-3xl font-bold text-primary">{formatPrice(p.price)}</p>
+          {p.is_published && <div className="mt-4"><SaveProductButton productId={p.id} /></div>}
+          {p.description && <p className="whitespace-pre-line text-foreground/85">{p.description}</p>}
 
           {store && (
-            <div className="mt-8 rounded-2xl border border-border bg-card p-5 shadow-card">
+            <div className="mt-6 rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-card">
               <p className="text-xs uppercase tracking-wider text-muted-foreground">{t.browse.seller}</p>
               <div className="mt-3 flex items-center gap-3">
                 {store.logo_url && urls.data?.[store.logo_url] ? (
-                  <img src={urls.data[store.logo_url]} alt="" className="size-12 rounded-lg object-cover" />
+                  <img src={urls.data[store.logo_url]} alt="" className="size-10 sm:size-12 rounded-lg object-cover" />
                 ) : (
-                  <div className="grid size-12 place-items-center rounded-lg bg-secondary"><Store className="size-5 text-muted-foreground" /></div>
+                  <div className="grid size-10 sm:size-12 place-items-center rounded-lg bg-secondary"><Store className="size-5 text-muted-foreground" /></div>
                 )}
                 <p className="font-medium">{store.name}</p>
               </div>
               <div className="mt-3"><StoreLocationButton name={store.name} address={store.address} lat={store.lat} lng={store.lng} /></div>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                 {store.phone && (
-                  <Button asChild><a href={`tel:${store.phone}`}><Phone className="size-4" /> {store.phone}</a></Button>
+                  <Button asChild className="w-full sm:w-auto"><a href={`tel:${store.phone}`}><Phone className="size-4" /> {store.phone}</a></Button>
                 )}
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="w-full sm:w-auto">
                   <Link to="/$lang/stores/$id" params={{ lang, id: store.id }}>{t.browse.viewStore}</Link>
                 </Button>
               </div>

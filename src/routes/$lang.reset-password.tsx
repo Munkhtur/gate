@@ -54,13 +54,13 @@ function ResetPassword() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
-      <div className="rounded-2xl border border-border bg-card p-8 shadow-card">
-        <h1 className="font-display text-2xl font-semibold">{t.auth.forgotTitle}</h1>
+    <div className="mx-auto max-w-md px-4 py-12 sm:py-16">
+      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-card">
+        <h1 className="font-display text-xl sm:text-2xl font-semibold">{t.auth.forgotTitle}</h1>
         {ready === false ? (
           <p className="mt-4 text-muted-foreground">{t.auth.invalidLink}</p>
         ) : (
-          <form onSubmit={submit} className="mt-6 space-y-4">
+          <form onSubmit={submit} className="mt-5 space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="pw">{t.auth.newPassword}</Label>
               <Input id="pw" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} required />

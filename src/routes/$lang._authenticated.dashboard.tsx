@@ -51,11 +51,11 @@ function Dashboard() {
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-14">
-      <h1 className="font-display text-3xl font-semibold">{t.dashboard.title}</h1>
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:py-14">
+      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.dashboard.title}</h1>
       {store.isLoading ? null : !store.data ? (
         <>
-          <div className="mt-8 flex items-center gap-4 rounded-2xl border border-dashed border-border bg-card p-6">
+          <div className="mt-6 flex items-center gap-4 rounded-2xl border border-dashed border-border bg-card p-4 sm:p-6">
             <Store className="size-8 text-primary" />
             <p className="text-muted-foreground">{t.dashboard.empty}</p>
           </div>
@@ -121,18 +121,18 @@ function StoreForm({ store }: { store: StoreRow | null }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-card">
-      <h2 className="font-display text-xl font-semibold">{store ? t.dashboard.storeInfo : t.dashboard.createStore}</h2>
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
+    <form onSubmit={onSubmit} className="mt-6 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-card">
+      <h2 className="font-display text-lg sm:text-xl font-semibold">{store ? t.dashboard.storeInfo : t.dashboard.createStore}</h2>
+      <div className="mt-4 space-y-4 sm:grid sm:gap-4 sm:grid-cols-2">
         <Field label={t.dashboard.storeName}><Input name="name" defaultValue={store?.name} required maxLength={120} /></Field>
         <Field label={t.dashboard.phone}><Input name="phone" defaultValue={store?.phone ?? ""} maxLength={40} /></Field>
-        <div className="md:col-span-2">
+        <div className="sm:col-span-2">
           <Field label={t.dashboard.description}><Textarea name="description" defaultValue={store?.description ?? ""} maxLength={2000} /></Field>
         </div>
-        <div className="md:col-span-2">
+        <div className="sm:col-span-2">
           <Field label={t.dashboard.address}><Input name="address" defaultValue={store?.address ?? ""} maxLength={300} /></Field>
         </div>
-        <div className="space-y-3 md:col-span-2">
+        <div className="space-y-3 sm:col-span-2">
           <div className="flex items-center justify-between gap-3">
             <h3 className="font-medium">{t.maps.picker}</h3>
             <Button type="button" size="sm" variant="ghost" disabled={!lat && !lng} onClick={() => { setLat(""); setLng(""); }}><X className="size-4" />{t.maps.clear}</Button>
@@ -144,15 +144,15 @@ function StoreForm({ store }: { store: StoreRow | null }) {
         <Field label={t.dashboard.logo}>
           <div className="flex items-center gap-3">
             {logo && logoUrls.data?.[logo] ? (
-              <img src={logoUrls.data[logo]} alt="" className="size-14 rounded-lg object-cover" />
+              <img src={logoUrls.data[logo]} alt="" className="size-12 sm:size-14 rounded-lg object-cover" />
             ) : (
-              <div className="grid size-14 place-items-center rounded-lg bg-secondary"><Store className="size-5 text-muted-foreground" /></div>
+              <div className="grid size-12 sm:size-14 place-items-center rounded-lg bg-secondary"><Store className="size-5 text-muted-foreground" /></div>
             )}
             <Input type="file" accept="image/*" onChange={(e) => onLogo(e.target.files?.[0])} />
           </div>
         </Field>
       </div>
-      <Button type="submit" className="mt-6" disabled={busy}>{store ? t.dashboard.save : t.dashboard.createStore}</Button>
+      <Button type="submit" className="mt-4 sm:mt-6" disabled={busy}>{store ? t.dashboard.save : t.dashboard.createStore}</Button>
     </form>
   );
 }
@@ -197,31 +197,31 @@ function Products({ store }: { store: StoreRow }) {
   }
 
   return (
-    <section className="mt-10">
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-2xl font-semibold">{t.dashboard.products}</h2>
-        <Button onClick={() => setEditing("new")}><Plus className="size-4" /> {t.dashboard.addProduct}</Button>
+    <section className="mt-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="font-display text-xl sm:text-2xl font-semibold">{t.dashboard.products}</h2>
+        <Button onClick={() => setEditing("new")} className="w-full sm:w-auto"><Plus className="size-4" /> {t.dashboard.addProduct}</Button>
       </div>
-      {products.data?.length === 0 && <p className="mt-6 text-muted-foreground">{t.dashboard.noProducts}</p>}
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {products.data?.length === 0 && <p className="mt-4 text-muted-foreground">{t.dashboard.noProducts}</p>}
+      <div className="mt-4 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {products.data?.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
             <div className="aspect-[4/3] bg-secondary">
               {p.images[0] && urls.data?.[p.images[0]] && <img src={urls.data[p.images[0]] ?? undefined} alt={p.title} className="size-full object-cover" />}
             </div>
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-medium">{p.title}</h3>
                 <Badge variant={p.is_published ? "default" : "secondary"}>{p.is_published ? t.dashboard.published : t.dashboard.draft}</Badge>
               </div>
               <p className="mt-1 text-lg font-semibold text-primary">₮{Number(p.price).toLocaleString()}</p>
-              <div className="mt-2 flex gap-4 text-sm text-muted-foreground">
+              <div className="mt-2 flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-1" title={t.dashboard.views}><Eye className="size-4" /> {stats.data?.[p.id]?.views ?? 0} {t.dashboard.views}</span>
                 <span className="inline-flex items-center gap-1" title={t.dashboard.saves}><Heart className="size-4" /> {stats.data?.[p.id]?.saves ?? 0} {t.dashboard.saves}</span>
               </div>
-              <div className="mt-3 flex gap-2">
-                <Button size="sm" variant="outline" onClick={() => setEditing(p)}><Pencil className="size-3.5" /> {t.dashboard.edit}</Button>
-                <Button size="sm" variant="ghost" onClick={() => remove(p)}><Trash2 className="size-3.5" /> {t.dashboard.delete}</Button>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={() => setEditing(p)} className="w-full sm:w-auto"><Pencil className="size-3.5" /> {t.dashboard.edit}</Button>
+                <Button size="sm" variant="ghost" onClick={() => remove(p)} className="w-full sm:w-auto"><Trash2 className="size-3.5" /> {t.dashboard.delete}</Button>
               </div>
             </div>
           </div>
@@ -305,7 +305,7 @@ function ProductForm({ storeId, product, onDone }: { storeId: string; product: P
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <Field label={t.dashboard.productTitle}><Input name="title" defaultValue={product?.title} required maxLength={160} /></Field>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field label={t.dashboard.price}><Input name="price" type="number" min={0} step="1" defaultValue={product ? Number(product.price) : ""} /></Field>
         <Field label={t.dashboard.category}>
           <Select value={categoryId} onValueChange={setCategoryId}>
@@ -320,7 +320,7 @@ function ProductForm({ storeId, product, onDone }: { storeId: string; product: P
       </div>
       <Field label={t.dashboard.description}><Textarea name="description" defaultValue={product?.description ?? ""} maxLength={4000} rows={4} /></Field>
       <Field label={t.dashboard.photos}>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {images.map((p) => (
             <div key={p} className="relative aspect-square overflow-hidden rounded-md bg-secondary">
               {urls.data?.[p] && <img src={urls.data[p]} alt="" className="size-full object-cover" />}
@@ -343,9 +343,9 @@ function ProductForm({ storeId, product, onDone }: { storeId: string; product: P
         <Switch id="pub" checked={published} onCheckedChange={setPublished} />
         <Label htmlFor="pub">{t.dashboard.published}</Label>
       </div>
-      <div className="flex justify-end gap-2">
-        <Button type="button" variant="ghost" onClick={onDone}>{t.dashboard.cancel}</Button>
-        <Button type="submit" disabled={busy || uploading}>{t.dashboard.save}</Button>
+      <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+        <Button type="button" variant="ghost" onClick={onDone} className="w-full sm:w-auto">{t.dashboard.cancel}</Button>
+        <Button type="submit" disabled={busy || uploading} className="w-full sm:w-auto">{t.dashboard.save}</Button>
       </div>
     </form>
   );

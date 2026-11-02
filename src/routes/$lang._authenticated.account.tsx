@@ -57,10 +57,10 @@ function Account() {
   const getSaved = (_l: Locale) => t.account.saved;
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-14">
-      <h1 className="font-display text-3xl font-semibold">{loaded && !name ? t.account.setupTitle : t.account.title}</h1>
+    <div className="mx-auto max-w-xl px-4 py-10">
+      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{loaded && !name ? t.account.setupTitle : t.account.title}</h1>
       <p className="mt-2 text-muted-foreground">{t.account.subtitle}</p>
-      <form onSubmit={save} className="mt-8 space-y-5 rounded-2xl border border-border bg-card p-6 shadow-card">
+      <form onSubmit={save} className="mt-6 space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-card">
         <div className="space-y-1.5">
           <Label>{t.auth.email}</Label>
           <Input value={user.email ?? ""} disabled />
@@ -71,7 +71,7 @@ function Account() {
         </div>
         <div className="space-y-1.5">
           <Label>{t.account.preferredLanguage}</Label>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {LOCALES.map((l) => (
               <Button key={l} type="button" variant={pref === l ? "default" : "outline"} onClick={() => setPref(l)}>
                 {LOCALE_LABELS[l]}
@@ -79,7 +79,7 @@ function Account() {
             ))}
           </div>
         </div>
-        <Button type="submit" disabled={busy || !loaded}>{t.account.save}</Button>
+        <Button type="submit" className="w-full" disabled={busy || !loaded}>{t.account.save}</Button>
       </form>
     </div>
   );

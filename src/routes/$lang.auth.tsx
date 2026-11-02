@@ -92,18 +92,18 @@ function AuthPage() {
   const title = mode === "signin" ? t.auth.signInTitle : mode === "signup" ? t.auth.signUpTitle : t.auth.forgotTitle;
 
   return (
-    <div className="mx-auto flex max-w-md flex-col px-4 py-16">
-      <div className="rounded-2xl border border-border bg-card p-8 shadow-card">
-        <h1 className="font-display text-2xl font-semibold">{title}</h1>
+    <div className="mx-auto flex max-w-md flex-col px-4 py-12 sm:py-16">
+      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-card">
+        <h1 className="font-display text-xl sm:text-2xl font-semibold">{title}</h1>
 
         {mode !== "forgot" && (
-          <div className="mt-6 grid grid-cols-2 rounded-lg bg-muted p-1 text-sm">
+          <div className="mt-5 grid grid-cols-2 rounded-lg bg-muted p-1 text-sm">
             {(["signin", "signup"] as const).map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => setMode(m)}
-                className={"rounded-md py-2 " + (mode === m ? "bg-card font-semibold shadow-sm" : "text-muted-foreground")}
+                className={"rounded-md py-2.5 " + (mode === m ? "bg-card font-semibold shadow-sm" : "text-muted-foreground")}
               >
                 {m === "signin" ? t.auth.signInTab : t.auth.signUpTab}
               </button>
@@ -111,7 +111,7 @@ function AuthPage() {
           </div>
         )}
 
-        <form onSubmit={submit} className="mt-6 space-y-4">
+        <form onSubmit={submit} className="mt-5 space-y-4">
           {mode === "signup" && (
             <div className="space-y-1.5">
               <Label htmlFor="name">{t.auth.displayName}</Label>
@@ -147,7 +147,7 @@ function AuthPage() {
 
         {mode !== "forgot" && (
           <>
-            <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
               <span className="h-px flex-1 bg-border" />
               {t.auth.or}
               <span className="h-px flex-1 bg-border" />

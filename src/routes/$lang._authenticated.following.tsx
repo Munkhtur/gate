@@ -21,8 +21,8 @@ export const Route = createFileRoute("/$lang/_authenticated/following")({
       { name: "twitter:card", content: "summary" },
     ] };
   },
-  pendingComponent: () => { const t = useT(); return <p className="mx-auto max-w-6xl px-4 py-14 text-muted-foreground">{t.browse.loading}</p>; },
-  errorComponent: ({ reset }) => { const t = useT(); return <div className="mx-auto max-w-6xl px-4 py-14"><p role="alert">{t.auth.genericError}</p><Button className="mt-4" onClick={reset}>{t.wishlist.retry}</Button></div>; },
+  pendingComponent: () => { const t = useT(); return <p className="mx-auto max-w-6xl px-4 py-10 text-muted-foreground">{t.browse.loading}</p>; },
+  errorComponent: ({ reset }) => { const t = useT(); return <div className="mx-auto max-w-6xl px-4 py-10"><p role="alert">{t.auth.genericError}</p><Button className="mt-4" onClick={reset}>{t.wishlist.retry}</Button></div>; },
   component: Following,
 });
 
@@ -35,30 +35,30 @@ function Following() {
   const urls = useImageUrls(paths);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="font-display text-3xl font-semibold">{t.follow.title}</h1>
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.follow.title}</h1>
       <p className="mt-2 text-muted-foreground">{t.follow.description}</p>
       {data.stores.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-border p-10 text-center">
+        <div className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center">
           <p className="text-muted-foreground">{t.follow.empty}</p>
           <Button asChild className="mt-4"><Link to="/$lang/stores" params={{ lang }}>{t.nav.stores}</Link></Button>
         </div>
       ) : (
-        <>
-          <div className="mt-6 flex gap-3 overflow-x-auto pb-2">
+        <> 
+          <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
             {data.stores.map((s) => (
               <Link key={s.id} to="/$lang/stores/$id" params={{ lang, id: s.id }}
-                className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-card py-1.5 pl-1.5 pr-4 hover:border-primary">
+                className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-card py-1.5 pl-1.5 pr-3 hover:border-primary">
                 {s.logo_url && urls.data?.[s.logo_url]
-                  ? <img src={urls.data[s.logo_url]} alt="" className="size-8 rounded-full object-cover" />
-                  : <span className="grid size-8 place-items-center rounded-full bg-secondary"><Store className="size-4" /></span>}
+                  ? <img src={urls.data[s.logo_url]} alt="" className="size-7 rounded-full object-cover" />
+                  : <span className="grid size-7 place-items-center rounded-full bg-secondary"><Store className="size-3.5" /></span>}
                 <span className="text-sm font-medium">{s.name}</span>
               </Link>
             ))}
           </div>
-          <h2 className="mt-8 font-display text-2xl font-semibold">{t.follow.latest}</h2>
-          {data.products.length === 0 && <p className="mt-4 text-muted-foreground">{t.browse.noResults}</p>}
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <h2 className="mt-6 font-display text-xl sm:text-2xl font-semibold">{t.follow.latest}</h2>
+          {data.products.length === 0 && <p className="mt-3 text-muted-foreground">{t.browse.noResults}</p>}
+          <div className="mt-4 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {data.products.map((p) => (
               <ProductCard key={p.id} product={p} imageUrl={p.images[0] ? urls.data?.[p.images[0]] : undefined} />
             ))}

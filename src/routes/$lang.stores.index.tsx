@@ -38,20 +38,20 @@ function Stores() {
   const urls = useImageUrls(logos);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="font-display text-3xl font-semibold">{t.browse.storesTitle}</h1>
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
+      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.browse.storesTitle}</h1>
       {stores.isLoading ? (
-        <p className="mt-8 text-muted-foreground">{t.browse.loading}</p>
+        <p className="mt-6 text-muted-foreground">{t.browse.loading}</p>
       ) : stores.data?.length === 0 ? (
-        <p className="mt-8 text-muted-foreground">{t.browse.noStores}</p>
+        <p className="mt-6 text-muted-foreground">{t.browse.noStores}</p>
       ) : (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 space-y-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:space-y-0">
           {stores.data?.map((s) => (
-            <Link key={s.id} to="/$lang/stores/$id" params={{ lang, id: s.id }} className="flex gap-4 rounded-xl border border-border bg-card p-5 shadow-card transition hover:-translate-y-0.5">
+            <Link key={s.id} to="/$lang/stores/$id" params={{ lang, id: s.id }} className="flex gap-3 sm:gap-4 rounded-xl border border-border bg-card p-4 sm:p-5 shadow-card transition hover:-translate-y-0.5">
               {s.logo_url && urls.data?.[s.logo_url] ? (
-                <img src={urls.data[s.logo_url]} alt="" className="size-14 shrink-0 rounded-lg object-cover" />
+                <img src={urls.data[s.logo_url]} alt="" className="size-12 sm:size-14 shrink-0 rounded-lg object-cover" />
               ) : (
-                <div className="grid size-14 shrink-0 place-items-center rounded-lg bg-secondary"><Store className="size-6 text-muted-foreground" /></div>
+                <div className="grid size-12 sm:size-14 shrink-0 place-items-center rounded-lg bg-secondary"><Store className="size-6 text-muted-foreground" /></div>
               )}
               <div className="min-w-0">
                 <h2 className="font-medium">{s.name}</h2>

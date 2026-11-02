@@ -51,13 +51,13 @@ export function PostFeed({ storeId, initialPostId }: { storeId?: string; initial
     <div ref={container} tabIndex={0} aria-label={t.posts.title} onKeyDown={event => {
       if (event.target !== event.currentTarget) return;
       if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); move(event.key === "ArrowDown" ? 1 : -1); }
-    }} className="post-feed h-[calc(100dvh-10rem)] min-h-80 max-h-[850px] snap-y snap-mandatory overflow-y-auto overscroll-y-contain rounded-lg bg-cinema outline-none focus-visible:ring-2 focus-visible:ring-ring">
+    }} className="post-feed h-[calc(100dvh-8rem)] min-h-[60vh] max-h-[850px] snap-y snap-mandatory overflow-y-auto overscroll-y-contain rounded-lg bg-cinema outline-none focus-visible:ring-2 focus-visible:ring-ring">
       {posts.map(post => <div key={post.id} id={post.id} ref={element => { if (element) items.current.set(post.id, element); else items.current.delete(post.id); }} className="h-full snap-start snap-always">
         <PostSlide post={post} url={urls.data?.[post.media_path]} active={post.id === activeId} loading={urls.isPending} />
       </div>)}
       {feed.isFetchingNextPage && <p role="status" className="py-4 text-center text-cinema-foreground">{t.browse.loading}</p>}
     </div>
-    <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
+    <div className="absolute right-2 top-2 z-10 flex flex-col gap-1.5">
       <Button variant="secondary" size="icon" aria-label={t.posts.previous} title={t.posts.previous} disabled={index <= 0} onClick={() => move(-1)}><ArrowUp className="size-5" /></Button>
       <Button variant="secondary" size="icon" aria-label={t.posts.next} title={t.posts.next} disabled={index >= posts.length - 1} onClick={() => move(1)}><ArrowDown className="size-5" /></Button>
     </div>

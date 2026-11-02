@@ -49,28 +49,28 @@ function Home() {
   return (
     <>
       <section className="bg-hero text-primary-foreground">
-        <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-28">
           <p className="text-sm uppercase tracking-[0.2em] text-accent">{t.home.eyebrow}</p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-tight md:text-6xl">{t.home.title}</h1>
-          <p className="mt-5 max-w-xl text-lg opacity-85">{t.home.subtitle}</p>
-          <form className="mt-8 flex max-w-xl gap-2 rounded-xl bg-card p-2 shadow-card" onSubmit={(e) => { e.preventDefault(); const q = String(new FormData(e.currentTarget).get("q") || "").trim(); navigate({ to: "/$lang/browse", params: { lang }, search: q ? { q } : {} }); }}>
-            <Input name="q" placeholder={t.home.searchPlaceholder} className="border-0 bg-transparent text-foreground shadow-none focus-visible:ring-0" />
-            <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl xl:text-6xl">{t.home.title}</h1>
+          <p className="mt-4 max-w-xl text-base sm:text-lg opacity-85">{t.home.subtitle}</p>
+          <form className="mt-6 flex max-w-xl gap-2 rounded-xl bg-card p-2 shadow-card" onSubmit={(e) => { e.preventDefault(); const q = String(new FormData(e.currentTarget).get("q") || "").trim(); navigate({ to: "/$lang/browse", params: { lang }, search: q ? { q } : {} }); }}>
+            <Input name="q" placeholder={t.home.searchPlaceholder} className="border-0 bg-transparent text-foreground shadow-none focus-visible:ring-0 flex-1 min-w-0" />
+            <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap">
               <Search className="size-4" /> {t.home.search}
             </Button>
           </form>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-display text-2xl font-semibold">{t.home.categoriesTitle}</h2>
-          <Link to="/$lang/browse" params={{ lang }} className="text-sm text-primary hover:underline">{t.browse.title} →</Link>
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+        <div className="flex items-baseline justify-between gap-4 flex-wrap">
+          <h2 className="font-display text-xl sm:text-2xl font-semibold">{t.home.categoriesTitle}</h2>
+          <Link to="/$lang/browse" params={{ lang }} className="text-sm text-primary hover:underline whitespace-nowrap">{t.browse.title} →</Link>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {CATS.map(([key, Icon]) => (
-            <Link key={key} to="/$lang/browse" params={{ lang }} search={{ category: key }} className="group flex items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-card transition hover:-translate-y-0.5">
-              <span className="grid size-10 place-items-center rounded-md bg-secondary text-primary group-hover:bg-accent group-hover:text-accent-foreground">
+            <Link key={key} to="/$lang/browse" params={{ lang }} search={{ category: key }} className="group flex items-center gap-3 rounded-lg border border-border bg-card p-3 sm:p-4 shadow-card transition hover:-translate-y-0.5">
+              <span className="grid size-9 sm:size-10 place-items-center rounded-md bg-secondary text-primary group-hover:bg-accent group-hover:text-accent-foreground">
                 <Icon className="size-5" />
               </span>
               <span className="text-sm font-medium">{t.categories[key]}</span>
@@ -82,10 +82,10 @@ function Home() {
       <MostLiked />
       <NewestPosts />
 
-      <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-border bg-secondary p-8 md:flex-row md:items-center">
+      <section className="mx-auto max-w-6xl px-4 pb-12 sm:pb-20">
+        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-border bg-secondary p-6 sm:p-8">
           <div>
-            <h2 className="font-display text-xl font-semibold">{t.home.ownerTitle}</h2>
+            <h2 className="font-display text-lg sm:text-xl font-semibold">{t.home.ownerTitle}</h2>
             <p className="mt-1 text-muted-foreground">{t.home.ownerText}</p>
           </div>
           <Button asChild>
@@ -105,12 +105,12 @@ function MostLiked() {
   const urls = useImageUrls(covers);
   if (!products.length) return null;
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-16">
-      <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-2xl font-semibold">{t.home.mostLiked}</h2>
-        <Link to="/$lang/browse" params={{ lang }} className="text-sm text-primary hover:underline">{t.home.viewAll} →</Link>
+    <section className="mx-auto max-w-6xl px-4 pb-12 sm:pb-16">
+      <div className="flex items-baseline justify-between gap-4 flex-wrap">
+        <h2 className="font-display text-xl sm:text-2xl font-semibold">{t.home.mostLiked}</h2>
+        <Link to="/$lang/browse" params={{ lang }} className="text-sm text-primary hover:underline whitespace-nowrap">{t.home.viewAll} →</Link>
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product as Tables<"products">} imageUrl={product.images?.[0] ? urls.data?.[product.images[0]] : undefined} storeName={product.stores?.name ?? undefined} />
         ))}
@@ -126,12 +126,12 @@ function NewestPosts() {
   const urls = usePostUrls(posts.map((p) => p.media_path));
   if (!posts.length) return null;
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-16">
-      <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-2xl font-semibold">{t.home.newestPosts}</h2>
-        <Link to="/$lang/shorts" params={{ lang }} className="text-sm text-primary hover:underline">{t.home.viewAll} →</Link>
+    <section className="mx-auto max-w-6xl px-4 pb-12 sm:pb-16">
+      <div className="flex items-baseline justify-between gap-4 flex-wrap">
+        <h2 className="font-display text-xl sm:text-2xl font-semibold">{t.home.newestPosts}</h2>
+        <Link to="/$lang/shorts" params={{ lang }} className="text-sm text-primary hover:underline whitespace-nowrap">{t.home.viewAll} →</Link>
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {posts.map((post) => <PostTile key={post.id} post={post} url={urls.data?.[post.media_path]} />)}
       </div>
     </section>
