@@ -162,6 +162,10 @@ export const mn = {
     pause: "Түр зогсоох",
     mute: "Дуу хаах",
     unmute: "Дуу нээх",
+    like: "Таалагдсан",
+    comment: "Сэтгэгдэл",
+    share: "Үргэлжлүүлэх",
+    moreOptions: "Цааш дэлгэрэнгүй"
   },
   maps: {
     open: "Газрын зураг нээх",

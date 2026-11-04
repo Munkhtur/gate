@@ -2,7 +2,7 @@ import { infiniteQueryOptions, queryOptions, useQuery } from "@tanstack/react-qu
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
-export type Post = Tables<"posts"> & { stores: { name: string } | null };
+export type Post = Tables<"posts"> & { stores: { name: string; logo_url: string | null } | null };
 export const POST_BUCKET = "post-media";
 export const POST_MAX_BYTES = 50 * 1024 * 1024;
 const MIME_TYPES: Record<string, { kind: "image" | "video"; ext: string }> = {
@@ -27,7 +27,7 @@ export function feedOptions(storeId?: string) {
   return infiniteQueryOptions({
     queryKey: ["posts-feed", storeId ?? "all"], initialPageParam: 0,
     queryFn: async ({ pageParam }) => {
-      let query = supabase.from("posts").select("*, stores(name)").eq("is_published", true);
+      let query = supabase.from("posts").select("*, stores(name, logo_url)").eq("is_published", true);
       if (storeId) query = query.eq("store_id", storeId);
       const { data, error } = await query.order("created_at", { ascending: false }).order("id", { ascending: false }).range(pageParam, pageParam + 11);
       if (error) throw error;
@@ -40,8 +40,19 @@ export function latestPostsOptions() {
   return queryOptions({
     queryKey: ["latest-posts"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("posts").select("*, stores(name)").eq("is_published", true)
+      const { data, error } = await supabase.from("posts").select("*, stores(name, logo_url)").eq("is_published", true)
         .order("created_at", { ascending: false }).limit(6);
+      if (error) throw error;
+      return data as Post[];
+    },
+  });
+}
+export function storeLatestPostsOptions(storeId: string, limit = 12) {
+  return queryOptions({
+    queryKey: ["store-latest-posts", storeId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("posts").select("*, stores(name, logo_url)").eq("is_published", true).eq("store_id", storeId)
+        .order("created_at", { ascending: false }).limit(limit);
       if (error) throw error;
       return data as Post[];
     },

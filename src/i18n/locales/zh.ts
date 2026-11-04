@@ -164,6 +164,10 @@ export const zh: Messages = {
     pause: "暂停",
     mute: "静音",
     unmute: "开启声音",
+    like: "点赞",
+    comment: "评论",
+    share: "分享",
+    moreOptions: "更多选项"
   },
   maps: {
     open: "打开地图",
