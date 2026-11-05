@@ -1,6 +1,7 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
+import type { Post } from "@/lib/posts";
 
 export const savedIdsOptions = (userId: string) => queryOptions({
   queryKey: ["wishlist-ids", userId],
@@ -20,6 +21,18 @@ export const wishlistOptions = (userId: string) => queryOptions({
       .order("created_at", { ascending: false });
     if (error) throw error;
     return data.map((row) => row.products);
+  },
+});
+
+export const likedPostsOptions = (userId: string) => queryOptions({
+  queryKey: ["liked-posts", userId],
+  queryFn: async () => {
+    const { data, error } = await (supabase.from as any)("post_likes")
+      .select("created_at, posts!inner(*, stores(name, logo_url))")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data.map((row) => row.posts) as Post[];
   },
 });
 

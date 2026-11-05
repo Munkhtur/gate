@@ -64,6 +64,13 @@
       "when": 1793623322941,
       "tag": "0008_create_popular_products_view",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793887769046,
+      "tag": "0009_post_likes",
+      "breakpoints": true
     }
   ]
 }

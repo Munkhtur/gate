@@ -104,8 +104,9 @@
   --sidebar-accent-foreground: oklch(0.25 0.04 200);
   --sidebar-border: oklch(0.88 0.02 85);
   --sidebar-ring: oklch(0.38 0.07 195);
-  --gradient-hero: radial-gradient(120% 90% at 85% 0%, color-mix(in oklab, var(--accent) 35%, transparent), transparent 60%), linear-gradient(160deg, var(--primary), oklch(0.28 0.06 210));
-  --shadow-card: 0 1px 0 var(--border), 0 12px 30px -18px color-mix(in oklab, var(--primary) 45%, transparent);
+  --gradient-hero: url("/bg.jpg") center/cover no-repeat;
+  --shadow-card:
+    0 1px 0 var(--border), 0 12px 30px -18px color-mix(in oklab, var(--primary) 45%, transparent);
 }
 
 @layer base {
@@ -126,7 +127,12 @@
   }
 
   /* Ensure minimum touch target size */
-  button, a, input, select, textarea, [role="button"] {
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role="button"] {
     touch-action: manipulation;
   }
 
@@ -142,13 +148,37 @@
   }
 }
 
-@utility bg-hero { background-image: var(--gradient-hero); }
-@utility shadow-card { box-shadow: var(--shadow-card); }
+@utility bg-hero {
+  background-image: var(--gradient-hero);
+}
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+/* Hide scrollbar while preserving scrolling */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 
-.store-map .leaflet-container { background: var(--muted); font-family: var(--font-sans); }
-.store-map .leaflet-control-attribution { background: var(--background); color: var(--muted-foreground); }
-.store-map .leaflet-control-attribution a { color: var(--primary); }
-.store-map-pin { background: transparent; border: none; }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.store-map .leaflet-container {
+  background: var(--muted);
+  font-family: var(--font-sans);
+}
+.store-map .leaflet-control-attribution {
+  background: var(--background);
+  color: var(--muted-foreground);
+}
+.store-map .leaflet-control-attribution a {
+  color: var(--primary);
+}
+.store-map-pin {
+  background: transparent;
+  border: none;
+}
 .store-map-pin-dot {
   display: block;
   width: 28px;

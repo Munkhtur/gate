@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getMessages, isLocale, useLocale, useT } from "@/i18n";
 import { useImageUrls } from "@/lib/images";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Sort = "new" | "price_asc" | "price_desc";
 type BrowseSearch = { q?: string | undefined; category?: string | undefined; min?: number | undefined; max?: number | undefined; sort?: Sort | undefined };
@@ -66,7 +67,7 @@ function Browse() {
       let q = supabase.from("products").select("*, stores(name)").eq("is_published", true).limit(60);
       if (search.q) {
         const term = search.q.replace(/[%,()]/g, " ").trim();
-        if (term) q = q.or(`title.ilike.%${term}%,description.ilike.%${term}%`);
+        if (term) q = q.or(`title.ilike.%${term}%,description.ilike.%${term}%,stores.name.ilike.%${term}%`);
       }
       if (search.category) q = q.eq("category_id", categoryId ?? "00000000-0000-0000-0000-000000000000");
       if (search.min !== undefined) q = q.gte("price", search.min);
@@ -90,53 +91,71 @@ function Browse() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
-      <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.browse.title}</h1>
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
+      <div className="mb-6">
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold">{t.browse.title}</h1>
+        <p className="mt-1 text-muted-foreground">{t.home.subtitle}</p>
+      </div>
 
-      <form key={JSON.stringify(search)} onSubmit={onSubmit} className="mt-4 grid gap-3 rounded-2xl border border-border bg-card p-3 sm:p-4 shadow-card">
-        <Input name="q" defaultValue={search.q} placeholder={t.home.searchPlaceholder} aria-label={t.home.search} />
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          <Input name="min" type="number" min={0} defaultValue={search.min} placeholder={t.browse.minPrice} aria-label={t.browse.minPrice} />
-          <Input name="max" type="number" min={0} defaultValue={search.max} placeholder={t.browse.maxPrice} aria-label={t.browse.maxPrice} />
-          <Button type="submit" className="col-span-2 sm:col-span-1"><Search className="size-4" /> {t.browse.apply}</Button>
+      <form key={JSON.stringify(search)} onSubmit={onSubmit} className="mb-6 rounded-xl border border-input bg-card p-4 sm:p-5 shadow-sm">
+        <div className="grid gap-3 sm:grid-cols-[1fr_140px_140px_auto] sm:items-end">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
+            <Input name="q" defaultValue={search.q} placeholder={t.home.searchPlaceholder} className="pl-10 h-11" aria-label={t.home.search} />
+          </div>
+          <Input name="min" type="number" min={0} defaultValue={search.min} placeholder={t.browse.minPrice} aria-label={t.browse.minPrice} className="h-11" />
+          <Input name="max" type="number" min={0} defaultValue={search.max} placeholder={t.browse.maxPrice} aria-label={t.browse.maxPrice} className="h-11" />
+          <Button type="submit" className="h-11 bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap"><Search className="size-4 mr-2" /> {t.browse.apply}</Button>
         </div>
       </form>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <Chip active={!search.category} onClick={() => navigate({ search: (p) => ({ ...p, category: undefined }) })}>{t.browse.all}</Chip>
-        {categories.data?.map((c) => (
-          <Chip key={c.id} active={search.category === c.slug} onClick={() => navigate({ search: (p) => ({ ...p, category: c.slug }) })}>
-            {lang === "zh" ? c.name_zh : c.name_mn}
-          </Chip>
-        ))}
-        <div className="ml-auto flex items-center gap-2 flex-wrap">
-          <select
-            aria-label={t.browse.sort}
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <Chip active={!search.category} onClick={() => navigate({ search: (p) => ({ ...p, category: undefined }) })}>{t.browse.all}</Chip>
+          {categories.data?.map((c) => (
+            <Chip key={c.id} active={search.category === c.slug} onClick={() => navigate({ search: (p) => ({ ...p, category: c.slug }) })}>
+              {lang === "zh" ? c.name_zh : c.name_mn}
+            </Chip>
+          ))}
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <p className="text-sm text-muted-foreground hidden sm:block">
+            {products.data?.length ?? 0} {t.browse.results}
+          </p>
+          <Select
             value={search.sort ?? "new"}
-            onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value === "new" ? undefined : (e.target.value as Sort) }) })}
-            className="h-11 rounded-md border border-input bg-background px-3 text-sm"
+            onValueChange={(v) => navigate({ search: (p) => ({ ...p, sort: v === "new" ? undefined : (v as Sort) }) })}
           >
-            <option value="new">{t.browse.newest}</option>
-            <option value="price_asc">{t.browse.priceAsc}</option>
-            <option value="price_desc">{t.browse.priceDesc}</option>
-          </select>
-          <Button variant="ghost" size="sm" onClick={() => navigate({ search: {} })}>{t.browse.reset}</Button>
+            <SelectTrigger className="w-[160px] h-9">
+              <SelectValue placeholder={t.browse.sort} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="new">{t.browse.newest}</SelectItem>
+              <SelectItem value="price_asc">{t.browse.priceAsc}</SelectItem>
+              <SelectItem value="price_desc">{t.browse.priceDesc}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => navigate({ search: {} })} aria-label={t.browse.reset}>
+            <X className="size-4" />
+          </Button>
         </div>
       </div>
 
       {products.isLoading ? (
-        <p className="mt-8 text-muted-foreground">{t.browse.loading}</p>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {[...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)}
+        </div>
       ) : products.data?.length === 0 ? (
-        <p className="mt-8 text-muted-foreground">{t.browse.noResults}</p>
+        <div className="rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
+          {t.browse.noResults}
+        </div>
       ) : (
-        <> 
-          <p className="mt-4 text-sm text-muted-foreground">{products.data?.length} {t.browse.results}</p>
-          <div className="mt-3 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.data?.map((p) => (
-              <ProductCard key={p.id} product={p} imageUrl={p.images[0] ? urls.data?.[p.images[0]] : undefined} storeName={p.stores?.name} />
-            ))}
-          </div>
-        </>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.data?.map((p) => (
+            <ProductCard key={p.id} product={p} imageUrl={p.images[0] ? urls.data?.[p.images[0]] : undefined} storeName={p.stores?.name} />
+          ))}
+        </div>
       )}
     </div>
   );
@@ -147,7 +166,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-3 py-1.5 text-sm transition ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:bg-secondary"}`}
+      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${active ? "border-primary bg-primary text-primary-foreground shadow-sm" : "border-input bg-white hover:bg-secondary"}`}
     >
       {children}
     </button>

@@ -6,6 +6,8 @@ import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { useImageUrls } from "@/lib/images";
 
 export const Route = createFileRoute("/$lang/shorts")({
   head: ({ params }) => {
@@ -43,6 +45,10 @@ function Shorts() {
     },
   });
 
+  // Get signed URLs for store logos
+  const storeLogos = (suggestedStores ?? []).map((s) => s.logo_url).filter(Boolean) as string[];
+  const logoUrls = useImageUrls(storeLogos);
+
   // Fetch categories for left sidebar
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -54,13 +60,13 @@ function Shorts() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 py-6">
         <div className="grid gap-6 lg:grid-cols-[260px_1fr_280px]">
           {/* Left Sidebar - Desktop only */}
           <aside className="hidden lg:block lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] overflow-y-auto space-y-6">
             {/* Feed Navigation */}
-            <nav className="rounded-xl border border-border bg-white p-4 shadow-sm space-y-2">
+            <Card className="p-4 shadow-sm space-y-2">
               <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
                 {t.nav.menu}
               </h3>
@@ -103,11 +109,11 @@ function Shorts() {
                 <Store className="size-5" />
                 {t.nav.stores}
               </Link>
-            </nav>
+            </Card>
 
             {/* Categories */}
             {categories && categories.length > 0 && (
-              <section className="rounded-xl border border-border bg-white p-4 shadow-sm space-y-3">
+              <Card className="p-4 shadow-sm space-y-3">
                 <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
                   {t.browse.all}
                 </h3>
@@ -143,7 +149,7 @@ function Shorts() {
                     <span className="text-base">{lang === "zh" ? c.name_zh : c.name_mn}</span>
                   </Link>
                 ))}
-              </section>
+              </Card>
             )}
           </aside>
 
@@ -161,17 +167,17 @@ function Shorts() {
           <aside className="hidden xl:block xl:sticky xl:top-24 xl:max-h-[calc(100vh-8rem)] overflow-y-auto space-y-6">
             {/* Suggested Stores */}
             {suggestedStores && suggestedStores.length > 0 && (
-              <section className="rounded-xl border border-border bg-white p-4 shadow-sm space-y-3">
+              <Card className="p-4 shadow-sm space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                    Suggested Stores
+                    {t.posts.suggestedStores}
                   </h3>
                   <Link
                     to="/$lang/stores"
                     params={{ lang }}
                     className="text-xs text-primary hover:underline"
                   >
-                    See All
+                    {t.browse.viewStore}
                   </Link>
                 </div>
                 {suggestedStores.map((store) => (
@@ -183,7 +189,7 @@ function Shorts() {
                   >
                     {store.logo_url ? (
                       <img
-                        src={store.logo_url}
+                        src={logoUrls.data?.[store.logo_url]}
                         alt=""
                         className="size-10 rounded-full object-cover group-hover:ring-2 group-hover:ring-primary"
                       />
@@ -195,14 +201,14 @@ function Shorts() {
                     <span className="truncate text-sm font-medium">{store.name}</span>
                   </Link>
                 ))}
-              </section>
+              </Card>
             )}
 
             {/* Popular Categories */}
             {categories && categories.length > 0 && (
-              <section className="rounded-xl border border-border bg-white p-4 shadow-sm space-y-3">
+              <Card className="p-4 shadow-sm space-y-3">
                 <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                  Popular Categories
+                  {t.posts.popularCategories}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {categories.slice(0, 10).map((c) => (
@@ -217,7 +223,7 @@ function Shorts() {
                     </Link>
                   ))}
                 </div>
-              </section>
+              </Card>
             )}
           </aside>
         </div>

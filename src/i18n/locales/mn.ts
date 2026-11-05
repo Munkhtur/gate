@@ -1,6 +1,6 @@
 export const mn = {
-  brand: "Захзээл",
-  tagline: "Олон дэлгүүрийн нэг зах",
+  brand: "Gate",
+  tagline: "Your marketplace for everything",
   nav: {
     home: "Нүүр",
     categories: "Ангилал",
@@ -109,6 +109,7 @@ export const mn = {
   },
   browse: {
     title: "Бараа үзэх",
+    subtitle: "Олон дэлгүүрийн шилдэг бараануудаас сонголтоо хийнэ үү.",
     all: "Бүх ангилал",
     minPrice: "Доод үнэ",
     maxPrice: "Дээд үнэ",
@@ -116,10 +117,10 @@ export const mn = {
     newest: "Шинэ нь эхэндээ",
     priceAsc: "Үнэ: багаас их",
     priceDesc: "Үнэ: ихээс бага",
-    apply: "Шүүх",
-    reset: "Цэвэрлэх",
+    apply: "Хайх",
+    reset: "Шүүлтүүр цэвэрлэх",
     noResults: "Илэрц олдсонгүй.",
-    results: "илэрц",
+    results: "бараа олдлоо",
     loading: "Ачаалж байна…",
     seller: "Худалдагч",
     contact: "Холбогдох",
@@ -140,6 +141,8 @@ export const mn = {
     description: "Таны хадгалсан бараанууд.",
     browse: "Бараа үзэх",
     retry: "Дахин оролдох",
+    savedProducts: "Хадгалсан бараа",
+    likedPosts: "Таалагдсан пост",
   },
   posts: {
     title: "Богино пост",
@@ -165,7 +168,9 @@ export const mn = {
     like: "Таалагдсан",
     comment: "Сэтгэгдэл",
     share: "Үргэлжлүүлэх",
-    moreOptions: "Цааш дэлгэрэнгүй"
+    moreOptions: "Цааш дэлгэрэнгүй",
+    suggestedStores: "Санал болгосон дэлгүүрүүд",
+    popularCategories: "Мөнгөн ангилалууд"
   },
   maps: {
     open: "Газрын зураг нээх",

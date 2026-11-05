@@ -48,8 +48,9 @@ function Home() {
   const navigate = useNavigate();
   return (
     <>
-      <section className="bg-hero text-primary-foreground">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-28">
+      <section className="relative text-primary-foreground" style={{ backgroundImage: 'url(/bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+        <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-28">
           <p className="text-sm uppercase tracking-[0.2em] text-accent">{t.home.eyebrow}</p>
           <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl xl:text-6xl">{t.home.title}</h1>
           <p className="mt-4 max-w-xl text-base sm:text-lg opacity-85">{t.home.subtitle}</p>

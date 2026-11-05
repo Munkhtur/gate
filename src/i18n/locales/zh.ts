@@ -1,8 +1,8 @@
 import type { Messages } from "./mn";
 
 export const zh: Messages = {
-  brand: "Захзээл",
-  tagline: "多店铺分类市场",
+  brand: "Gate",
+  tagline: "您的全品类市场",
   nav: {
     home: "首页",
     categories: "分类",
@@ -111,6 +111,7 @@ export const zh: Messages = {
   },
   browse: {
     title: "浏览商品",
+    subtitle: "从众多优选店铺中发现精选商品。",
     all: "全部分类",
     minPrice: "最低价",
     maxPrice: "最高价",
@@ -118,10 +119,10 @@ export const zh: Messages = {
     newest: "最新发布",
     priceAsc: "价格从低到高",
     priceDesc: "价格从高到低",
-    apply: "筛选",
-    reset: "清除",
+    apply: "搜索",
+    reset: "清除筛选",
     noResults: "没有找到结果。",
-    results: "个结果",
+    results: "件商品",
     loading: "加载中…",
     seller: "卖家",
     contact: "联系",
@@ -142,6 +143,8 @@ export const zh: Messages = {
     description: "您收藏的商品。",
     browse: "浏览商品",
     retry: "重试",
+    savedProducts: "收藏的商品",
+    likedPosts: "喜欢的动态",
   },
   posts: {
     title: "短动态",
@@ -167,7 +170,9 @@ export const zh: Messages = {
     like: "点赞",
     comment: "评论",
     share: "分享",
-    moreOptions: "更多选项"
+    moreOptions: "更多选项",
+    suggestedStores: "推荐店铺",
+    popularCategories: "热门分类"
   },
   maps: {
     open: "打开地图",
